@@ -2,7 +2,7 @@
  * project: dtogenerator-plugin
  * created: 09.03.2022
  */
-package de.tmilles.dtogenerator.plugin;
+package io.milles.gen.dtogenerator.plugin;
 
 import org.apache.maven.plugins.annotations.Parameter;
 

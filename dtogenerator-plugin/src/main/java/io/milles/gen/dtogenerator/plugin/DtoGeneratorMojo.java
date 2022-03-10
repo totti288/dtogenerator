@@ -2,7 +2,7 @@
  * project: dtogenerator-plugin
  * created: 09.03.2022
  */
-package de.tmilles.dtogenerator.plugin;
+package io.milles.gen.dtogenerator.plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,9 +22,10 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.dtogenerator.gen.Generator;
-import org.dtogenerator.gen.GeneratorClassConfig;
-import org.dtogenerator.gen.GeneratorConfig;
+
+import io.milles.gen.dtogenerator.gen.Generator;
+import io.milles.gen.dtogenerator.gen.GeneratorClassConfig;
+import io.milles.gen.dtogenerator.gen.GeneratorConfig;
 
 /**
  * @author tmilles

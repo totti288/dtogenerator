@@ -2,7 +2,7 @@
  * project: dtogenerator-gen
  * created: 08.03.2022
  */
-package org.dtogenerator.gen;
+package io.milles.gen.dtogenerator.gen;
 
 import java.util.HashMap;
 import java.util.Map;
