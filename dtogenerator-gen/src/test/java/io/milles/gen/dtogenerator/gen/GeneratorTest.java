@@ -50,19 +50,19 @@ public class GeneratorTest {
         generator.generate();
 
         assertTrue(equalsIgnoringLineEndings("src/test/resources/expected/ExampleClassDTO.java",
-                "target/test-classes/io/milles/gen/dtogenerator/dto/ExampleClassDTO.java"));
+                "target/test-gen/io/milles/gen/dtogenerator/dto/ExampleClassDTO.java"));
 
         assertTrue(equalsIgnoringLineEndings("src/test/resources/expected/ExampleDependencyClassDTO.java",
-                "target/test-classes/io/milles/gen/dtogenerator/dto/ExampleDependencyClassDTO.java"));
+                "target/test-gen/io/milles/gen/dtogenerator/dto/ExampleDependencyClassDTO.java"));
 
     }
 
     private static boolean equalsIgnoringLineEndings(final String pathA, final String pathB) throws IOException {
         final File fileA = new File(pathA);
-        final String contentA = Files.readString(fileA.toPath(), StandardCharsets.UTF_8);
+        final String contentA = new String(Files.readAllBytes(fileA.toPath()), StandardCharsets.UTF_8);
 
-        final File fileB = new File(pathA);
-        final String contentB = Files.readString(fileB.toPath(), StandardCharsets.UTF_8);
+        final File fileB = new File(pathB);
+        final String contentB = new String(Files.readAllBytes(fileB.toPath()), StandardCharsets.UTF_8);
 
         return normalizeLineEndings(contentA).equals(normalizeLineEndings(contentB));
     }
