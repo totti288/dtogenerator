@@ -1,1 +1,2 @@
 # dtogenerator
+A small project which can be used to generate a DTO out of basically any Java class. Especially useful when you want to expose bigger internal structures, that are quite often object to change, as an API. Renaming, white- and blacklisting ensure, that your API does not break. The project consists of a gen-Module, containing all the basic logic and a plugin-Module, containing a maven-plugin, allowing you to generate DTOs while building.
