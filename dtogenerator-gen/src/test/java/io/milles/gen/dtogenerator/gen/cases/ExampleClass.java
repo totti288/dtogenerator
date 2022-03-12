@@ -35,4 +35,6 @@ public class ExampleClass {
 
     private final Integer aFinalInteger = Integer.valueOf(1);
 
+    private ExampleDependencyClass[] aDependentClassArray;
+
 }

@@ -20,6 +20,8 @@ public class ExampleClassDTO implements java.io.Serializable {
 
     private java.lang.Integer aFinalInteger;
 
+    private io.milles.gen.dtogenerator.dto.ExampleDependencyClassDTO[] aDependentClassArray;
+
     public int getARenamedPrimitiveInt() {
         return this.aRenamedPrimitiveInt;
     }
@@ -52,6 +54,10 @@ public class ExampleClassDTO implements java.io.Serializable {
         return this.aFinalInteger;
     }
 
+    public io.milles.gen.dtogenerator.dto.ExampleDependencyClassDTO[] getADependentClassArray() {
+        return this.aDependentClassArray;
+    }
+
     public void setARenamedPrimitiveInt(int aRenamedPrimitiveInt) {
         this.aRenamedPrimitiveInt = aRenamedPrimitiveInt;
     }
@@ -82,6 +88,10 @@ public class ExampleClassDTO implements java.io.Serializable {
 
     public void setAFinalInteger(java.lang.Integer aFinalInteger) {
         this.aFinalInteger = aFinalInteger;
+    }
+
+    public void setADependentClassArray(io.milles.gen.dtogenerator.dto.ExampleDependencyClassDTO[] aDependentClassArray) {
+        this.aDependentClassArray = aDependentClassArray;
     }
 
 }
