@@ -74,7 +74,9 @@ public class Generator {
         // @formatter:off
         builder.append("package ").append(classConfig.getTargetPackage()).append(";").append(System.lineSeparator())
         .append(System.lineSeparator())
-        .append("public class ").append(classConfig.getTargetClassName()).append(getGeneric(classConfig.getSourceClass())).append(" implements java.io.Serializable {").append(System.lineSeparator());
+        .append("public class ").append(classConfig.getTargetClassName()).append(getGeneric(classConfig.getSourceClass())).append(" implements java.io.Serializable {").append(System.lineSeparator())
+        .append(System.lineSeparator())
+        .append("    private static final long serialVersionUID = 1L;").append(System.lineSeparator());
         // @formatter:on
 
         fw.write(builder.toString());
@@ -127,7 +129,7 @@ public class Generator {
             final String fieldName = fieldInfo.getFieldName();
             final String fieldNameCapitalized = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 
-            builder.append(System.lineSeparator()).append("    private ").append(fieldInfo.getType()).append(" get")
+            builder.append(System.lineSeparator()).append("    public ").append(fieldInfo.getType()).append(" get")
                     .append(fieldNameCapitalized).append("() {").append(System.lineSeparator())
                     .append("        return this.").append(fieldName).append(";").append(System.lineSeparator())
                     .append("    }").append(System.lineSeparator());
@@ -149,7 +151,7 @@ public class Generator {
             final String fieldName = fieldInfo.getFieldName();
             final String fieldNameCapitalized = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
 
-            builder.append(System.lineSeparator()).append("    private void set").append(fieldNameCapitalized)
+            builder.append(System.lineSeparator()).append("    public void set").append(fieldNameCapitalized)
                     .append("(").append(fieldInfo.getType()).append(" ").append(fieldName).append(") {")
                     .append(System.lineSeparator()).append("        this.").append(fieldName).append(" = ")
                     .append(fieldName).append(";").append(System.lineSeparator())
