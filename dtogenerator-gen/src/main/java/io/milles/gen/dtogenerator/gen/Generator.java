@@ -5,8 +5,9 @@
 package io.milles.gen.dtogenerator.gen;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.TypeVariable;
@@ -54,27 +55,31 @@ public class Generator {
             if (!targetFile.getParentFile().exists()) {
                 targetFile.getParentFile().mkdirs();
             }
-            final FileWriter fw = new FileWriter(targetFile, config.getCharSet());
 
-            generateHeader(fw, classConfig);
-            final List<FieldInfo> fieldInfos = getFieldInfo(classConfig);
-            generateFields(fw, fieldInfos);
-            generateGetters(fw, fieldInfos);
-            generateSetters(fw, fieldInfos);
+            try (final OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(targetFile),
+                    config.getCharSet())) {
 
-            fw.write(System.lineSeparator() + "}");
-            fw.close();
+                generateHeader(writer, classConfig);
+
+                final List<FieldInfo> fieldInfos = getFieldInfo(classConfig);
+                generateFields(writer, fieldInfos);
+                generateGetters(writer, fieldInfos);
+                generateSetters(writer, fieldInfos);
+
+                writer.write(System.lineSeparator() + "}");
+            }
         }
     }
 
     /**
      * Generates the head part of the source file, including the class declaration.
      * 
-     * @param fw          the FileWriter
+     * @param fw          the OutputStreamWriter
      * @param classConfig the config for the specific class
      * @throws IOException
      */
-    private void generateHeader(final FileWriter fw, final GeneratorClassConfig classConfig) throws IOException {
+    private void generateHeader(final OutputStreamWriter writer, final GeneratorClassConfig classConfig)
+            throws IOException {
         final StringBuilder builder = new StringBuilder();
         // @formatter:off
         builder.append("package ").append(classConfig.getTargetPackage()).append(";").append(System.lineSeparator())
@@ -84,7 +89,7 @@ public class Generator {
         .append("    private static final long serialVersionUID = 1L;").append(System.lineSeparator());
         // @formatter:on
 
-        fw.write(builder.toString());
+        writer.write(builder.toString());
     }
 
     /**
@@ -107,28 +112,28 @@ public class Generator {
     /**
      * Generates field infos in the source info.
      * 
-     * @param fw         the FileWriter
+     * @param fw         the OutputStreamWriter
      * @param fieldInfos the fields infos
      * @throws IOException
      */
-    private void generateFields(final FileWriter fw, final List<FieldInfo> fieldInfos) throws IOException {
+    private void generateFields(final OutputStreamWriter writer, final List<FieldInfo> fieldInfos) throws IOException {
         final StringBuilder builder = new StringBuilder();
-        for(final FieldInfo fieldInfo : fieldInfos) {
-            builder.append(System.lineSeparator()).append("    private ").append(fieldInfo.getType())
-                    .append(" ").append(fieldInfo.getFieldName()).append(";").append(System.lineSeparator());
+        for (final FieldInfo fieldInfo : fieldInfos) {
+            builder.append(System.lineSeparator()).append("    private ").append(fieldInfo.getType()).append(" ")
+                    .append(fieldInfo.getFieldName()).append(";").append(System.lineSeparator());
         }
 
-        fw.write(builder.toString());
+        writer.write(builder.toString());
     }
 
     /**
      * Generates getters in the source info
      * 
-     * @param fw         the FileWriter
+     * @param fw         the OutputStreamWriter
      * @param fieldInfos the fields infos
      * @throws IOException
      */
-    private void generateGetters(final FileWriter fw, final List<FieldInfo> fieldInfos) throws IOException {
+    private void generateGetters(final OutputStreamWriter writer, final List<FieldInfo> fieldInfos) throws IOException {
         final StringBuilder builder = new StringBuilder();
         for (final FieldInfo fieldInfo : fieldInfos) {
             final String fieldName = fieldInfo.getFieldName();
@@ -140,17 +145,17 @@ public class Generator {
                     .append("    }").append(System.lineSeparator());
         }
 
-        fw.write(builder.toString());
+        writer.write(builder.toString());
     }
 
     /**
      * Generates setters in the source info
      * 
-     * @param fw         the FileWriter
+     * @param fw         the OutputStreamWriter
      * @param fieldInfos the fields infos
      * @throws IOException
      */
-    private void generateSetters(final FileWriter fw, final List<FieldInfo> fieldInfos) throws IOException {
+    private void generateSetters(final OutputStreamWriter writer, final List<FieldInfo> fieldInfos) throws IOException {
         final StringBuilder builder = new StringBuilder();
         for (final FieldInfo fieldInfo : fieldInfos) {
             final String fieldName = fieldInfo.getFieldName();
@@ -159,11 +164,11 @@ public class Generator {
             builder.append(System.lineSeparator()).append("    public void set").append(fieldNameCapitalized)
                     .append("(").append(fieldInfo.getType()).append(" ").append(fieldName).append(") {")
                     .append(System.lineSeparator()).append("        this.").append(fieldName).append(" = ")
-                    .append(fieldName).append(";").append(System.lineSeparator())
-                    .append("    }").append(System.lineSeparator());
+                    .append(fieldName).append(";").append(System.lineSeparator()).append("    }")
+                    .append(System.lineSeparator());
         }
 
-        fw.write(builder.toString());
+        writer.write(builder.toString());
     }
 
     /**
@@ -176,8 +181,8 @@ public class Generator {
     private List<FieldInfo> getFieldInfo(final GeneratorClassConfig classConfig) {
         final List<FieldInfo> fieldInfos = new ArrayList<FieldInfo>();
         final Field[] fields = classConfig.getSourceClass().getDeclaredFields();
-        
-        for(final Field field : fields) {
+
+        for (final Field field : fields) {
             if (Modifier.isStatic(field.getModifiers())) {
                 // We skip static fields
                 continue;
@@ -203,7 +208,6 @@ public class Generator {
         final Class<?> fieldClass = field.getType();
 
         final StringBuilder builder = new StringBuilder();
-        
 
         if (fieldClass.getTypeParameters().length != 0) {
             builder.append(field.getGenericType().getTypeName());
