@@ -2,8 +2,9 @@
  * project: dtogenerator-gen
  * created: 08.03.2022
  */
-package io.milles.gen.dtogenerator.gen;
+package io.milles.gen.dtogenerator.gen.config;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,9 +17,15 @@ public class GeneratorConfig {
 
     private final Map<Class<?>, GeneratorClassConfig> classToClassConfigs = new HashMap<Class<?>, GeneratorClassConfig>();
     private final String targetDir;
+    private final Charset charSet;
 
     public GeneratorConfig(final String targetDir) {
+        this(targetDir, Charset.defaultCharset());
+    }
+
+    public GeneratorConfig(final String targetDir, final Charset charSet) {
         this.targetDir = targetDir;
+        this.charSet = charSet;
     }
 
     public void addClass(final GeneratorClassConfig config) {
@@ -39,6 +46,10 @@ public class GeneratorConfig {
 
     public String getTargetDir() {
         return targetDir;
+    }
+
+    public Charset getCharSet() {
+        return charSet;
     }
 
 }

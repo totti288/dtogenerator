@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.Charset;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +25,8 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 
 import io.milles.gen.dtogenerator.gen.Generator;
-import io.milles.gen.dtogenerator.gen.GeneratorClassConfig;
-import io.milles.gen.dtogenerator.gen.GeneratorConfig;
+import io.milles.gen.dtogenerator.gen.config.GeneratorClassConfig;
+import io.milles.gen.dtogenerator.gen.config.GeneratorConfig;
 
 /**
  * @author tmilles
@@ -40,6 +41,9 @@ public class DtoGeneratorMojo extends AbstractMojo {
     @Parameter(required = true)
     private String targetDir;
 
+    @Parameter(defaultValue = "UTF-8")
+    private String charSet;
+
     @Parameter(property = "project.compileClasspathElements", required = true, readonly = true)
     private List<String> classpath;
 
@@ -47,7 +51,7 @@ public class DtoGeneratorMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         initProjectClasspath();
 
-        final GeneratorConfig generatorConfig = new GeneratorConfig(targetDir);
+        final GeneratorConfig generatorConfig = new GeneratorConfig(targetDir, Charset.forName(charSet));
 
         for (final ClassConfig classConfigMojo : classes) {
             try {

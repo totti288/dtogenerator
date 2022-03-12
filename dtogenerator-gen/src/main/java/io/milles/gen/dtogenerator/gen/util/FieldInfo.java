@@ -2,7 +2,7 @@
  * project: dtogenerator-gen
  * created: 08.03.2022
  */
-package io.milles.gen.dtogenerator.gen;
+package io.milles.gen.dtogenerator.gen.util;
 
 /**
  * @author tmilles

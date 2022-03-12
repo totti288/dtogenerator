@@ -2,7 +2,7 @@
  * project: dtogenerator-gen
  * created: 08.03.2022
  */
-package io.milles.gen.dtogenerator.gen;
+package io.milles.gen.dtogenerator.gen.config;
 
 import java.io.File;
 import java.util.HashMap;
@@ -49,6 +49,10 @@ public class GeneratorClassConfig {
 
     public Map<String, String> getRenames() {
         return renames;
+    }
+
+    public String addRename(final String from, final String to) {
+        return renames.put(from, to);
     }
 
     public File getTargetFile(final File targetDir) {

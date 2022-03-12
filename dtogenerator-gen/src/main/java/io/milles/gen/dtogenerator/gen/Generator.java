@@ -18,6 +18,10 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.milles.gen.dtogenerator.gen.config.GeneratorClassConfig;
+import io.milles.gen.dtogenerator.gen.config.GeneratorConfig;
+import io.milles.gen.dtogenerator.gen.util.FieldInfo;
+
 /**
  * @author tmilles
  *
@@ -40,6 +44,7 @@ public class Generator {
 
     public void generate() throws IOException {
         logger.info("Writing classes to: {}", targetDir.getAbsolutePath());
+        logger.info("Using charset: {}", config.getCharSet().displayName());
         for (final Class<?> clazz : config.getClasses()) {
             logger.info("Generate started: {}", clazz.getCanonicalName());
             final GeneratorClassConfig classConfig = config.getClassConfig(clazz);
@@ -49,7 +54,7 @@ public class Generator {
             if (!targetFile.getParentFile().exists()) {
                 targetFile.getParentFile().mkdirs();
             }
-            final FileWriter fw = new FileWriter(targetFile);
+            final FileWriter fw = new FileWriter(targetFile, config.getCharSet());
 
             generateHeader(fw, classConfig);
             final List<FieldInfo> fieldInfos = getFieldInfo(classConfig);
